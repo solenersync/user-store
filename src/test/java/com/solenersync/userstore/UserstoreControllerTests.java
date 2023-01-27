@@ -22,21 +22,21 @@ class UserstoreControllerTests {
 
 	@Test
 	public void getHello() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
+		mvc.perform(MockMvcRequestBuilders.get("/v1/users/user/10002").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(content().string(equalTo("Userstore response")));
+			.andExpect(content().string(equalTo("Userstore response userid=10002")));
 	}
 
 	@Test
 	public void returnUser() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.post("/user").content("brian").accept(MediaType.APPLICATION_JSON))
+		mvc.perform(MockMvcRequestBuilders.post("/v1/users/user").content("test@test.com").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andExpect(content().string(equalTo("Hello there from userstore...brian")));
+			.andExpect(content().string(equalTo("Hello there from userstore - this is your id 10001")));
 	}
 
 	@Test
 	public void return400() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.post("/user").accept(MediaType.APPLICATION_JSON))
+		mvc.perform(MockMvcRequestBuilders.post("/v1/users/user").accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().is4xxClientError());
 	}
 

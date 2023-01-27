@@ -16,14 +16,14 @@ class UserstoreControllerIT {
 
 	@Test
 	public void getHello() throws Exception {
-		ResponseEntity<String> response = template.getForEntity("/", String.class);
-		assertThat(response.getBody()).isEqualTo("Userstore response");
+		ResponseEntity<String> response = template.getForEntity("/v1/users/user/10002", String.class);
+		assertThat(response.getBody()).isEqualTo("Userstore response userid=10002");
 	}
 
 	@Test
 	public void returnUser() throws Exception {
-		ResponseEntity<String> response = template.postForEntity("/user", "brian", String.class);
-		assertThat(response.getBody()).contains("Hello there from userstore...brian");
+		ResponseEntity<String> response = template.postForEntity("/v1/users/user", "test@test.com", String.class);
+		assertThat(response.getBody()).contains("Hello there from userstore - this is your id 10001");
 	}
 
 }
