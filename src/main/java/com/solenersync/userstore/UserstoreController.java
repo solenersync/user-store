@@ -1,22 +1,22 @@
 package com.solenersync.userstore;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
+@RequestMapping("/v1/users")
 public class UserstoreController {
 
-    @GetMapping("/")
-    public String index() {
-        System.out.println("sending response");
-        return "Userstore response";
+    @GetMapping("/user/{id}")
+    public String index(@PathVariable Integer id) {
+        log.debug("Retrieving user {} ",id);
+        return "Userstore response userid=" + id;
     }
 
     @PostMapping("/user")
-    public String user(@RequestBody String user) {
-        System.out.println("sending user back..");
-        return "Hello there from userstore..." + user;
+    public String user(@RequestBody String email) {
+        log.debug("Returning user id {} ",email);
+        return "Hello there from userstore - this is your id 10001";
     }
 }

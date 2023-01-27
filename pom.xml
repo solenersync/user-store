@@ -39,6 +39,10 @@
 			<artifactId>maven-failsafe-plugin</artifactId>
 			<version>3.0.0-M8</version>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
