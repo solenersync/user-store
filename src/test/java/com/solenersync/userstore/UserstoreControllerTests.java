@@ -1,43 +1,61 @@
 package com.solenersync.userstore;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import com.solenersync.userstore.controller.UserstoreController;
+import com.solenersync.userstore.model.User;
+import com.solenersync.userstore.service.UserService;
+import net.joshka.junit.json.params.JsonFileSource;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import javax.json.JsonObject;
+import java.time.LocalDateTime;
+import java.util.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+
+@ExtendWith({MockitoExtension.class})
 class UserstoreControllerTests {
 
-	@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-	@Autowired
-	private MockMvc mvc;
+	private MockMvc mockMvc;
 
-	@Test
-	public void getHello() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/v1/users/user/10002").accept(MediaType.APPLICATION_JSON))
+	@Mock
+	private UserService service;
+
+	@BeforeEach
+	public void setUp() {
+		mockMvc = MockMvcBuilders.standaloneSetup(new UserstoreController(service)).build();
+	}
+
+	@ParameterizedTest
+	@JsonFileSource(resources = "/get-user.json")
+	public void shouldReturnUserFromId(JsonObject json) throws Exception {
+
+		LocalDateTime date = LocalDateTime.of(2022, 8, 12, 19, 30, 30);
+		User user = User.builder()
+			.user_id(10002)
+			.name("Brian")
+			.password("password")
+			.email("test@test.com")
+			.registered_date(date)
+			.build();
+		when(service.findById(10002)).thenReturn(Optional.of(user));
+		mockMvc.perform(get("/api/v1/users/user/10002"))
 			.andExpect(status().isOk())
-			.andExpect(content().string(equalTo("Userstore response userid=10002")));
+			.andExpect(MockMvcResultMatchers.content().json(json.toString()));
 	}
 
-	@Test
-	public void returnUser() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.post("/v1/users/user").content("test@test.com").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(content().string(equalTo("Hello there from userstore - this is your id 10001")));
-	}
-
-	@Test
-	public void return400() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.post("/v1/users/user").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().is4xxClientError());
-	}
-
+//	@Test
+//	void shouldReturn404ForUnknownUser() throws Exception {
+//		when(service.findById(000001)).thenReturn(Optional.empty());
+//		mockMvc.perform(get("/api/v1/users/user/000001")).andExpect(status().isNotFound());
+//	}
 }
+
+
