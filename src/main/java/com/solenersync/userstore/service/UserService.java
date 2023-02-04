@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +44,7 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setName(request.getName());
         user.setPassword(request.getPassword());
-        user.setRegistered_date(new Date());
+        user.setRegistered_date(LocalDateTime.now());
         User newUser = (User) repository.save(user);
         return newUser;
     }

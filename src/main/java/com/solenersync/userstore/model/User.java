@@ -1,8 +1,10 @@
 package com.solenersync.userstore.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -31,7 +33,8 @@ public class User {
     private String password;
 
     @Column(name = "registered_date")
-    private Date registered_date;
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime registered_date;
 
     @Override
     public String toString() {
