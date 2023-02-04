@@ -61,6 +61,18 @@
 				<artifactId>spring-cloud-starter-aws-jdbc</artifactId>
 				<version>2.2.0.RELEASE</version>
 			</dependency>
+			<dependency>
+				<groupId>net.joshka</groupId>
+				<artifactId>junit-json-params</artifactId>
+				<version>1.1.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish</groupId>
+				<artifactId>javax.json</artifactId>
+				<version>1.1.4</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 
 	<build>
