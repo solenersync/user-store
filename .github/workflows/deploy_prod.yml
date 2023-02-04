@@ -38,7 +38,8 @@ jobs:
         REPOSITORY: solenersync-userstore
         IMAGE_TAG: ${{ steps.release-tag.outputs.release-tag }}
       run: |
-        aws ecr describe-repositories --repository-names ${REPOSITORY} || aws ecr create-repository --repository-name ${REPOSITORY}
+        aws ecr describe-repositories --repository-names ${REPOSITORY} || 
+        aws ecr create-repository --repository-name ${REPOSITORY}
         docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
         docker push -a $REGISTRY/$REPOSITORY
 
