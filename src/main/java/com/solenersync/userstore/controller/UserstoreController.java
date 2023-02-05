@@ -28,6 +28,13 @@ public class UserstoreController {
         return userService.findById(id);
     }
 
+    @PostMapping("/user/create")
+    public Integer createUser(@PathVariable Integer id, @RequestBody UserRequest request) {
+        User user = userService.create(request);
+        log.debug("Created user id {}",id);
+        return user.getUser_id();
+    }
+
     @GetMapping("/all")
     List<User> allUsers() {
         log.debug("Retrieving all users");
