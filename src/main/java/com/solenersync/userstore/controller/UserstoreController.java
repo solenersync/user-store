@@ -24,6 +24,7 @@ public class UserstoreController {
     @GetMapping("/user/{id}")
     public Optional<User> getUser(@PathVariable Integer id) {
         log.debug("Retrieving user {} ",id);
+        System.out.println("Retrieving user " + id);
         return userService.findById(id);
     }
 
