@@ -16,7 +16,7 @@ public class UserstoreApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
-			System.out.println("Userstore is up and running...");
+			System.out.println("Userstore is up and running....");
 		};
 	}
 
