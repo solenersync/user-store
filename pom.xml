@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.solenersync</groupId>
-	<artifactId>userstore</artifactId>
+	<artifactId>user-store</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>userstore</name>
-	<description>userstore service</description>
+	<name>user-store</name>
+	<description>user-store service</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

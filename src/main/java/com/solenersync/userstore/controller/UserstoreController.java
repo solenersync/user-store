@@ -45,6 +45,6 @@ public class UserstoreController {
     public String authenticateUser(@PathVariable Integer id, @RequestBody UserRequest request) {
         AuthResult authResult = userService.authenticate(id, request.getPassword());
         log.debug("Authenticating user id {} result {} ",id, authResult);
-        return "Hello there from userstore - this is your id 10001";
+        return "Hello there from user-store - this is your id 10001";
     }
 }
