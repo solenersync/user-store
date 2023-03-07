@@ -42,8 +42,6 @@ public class UserService {
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setName(request.getName());
-            System.out.println(request.getName());
-            System.out.println(user);
             User updatedUser = repository.save(user);
             return Optional.ofNullable(updatedUser);
         } else {
@@ -51,8 +49,7 @@ public class UserService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public List<User> findAll() {
+    private List<User> findAll() {
         return repository.findAll();
     }
 
