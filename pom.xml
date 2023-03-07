@@ -140,11 +140,6 @@
 								<goals>
 									<goal>prepare-agent</goal>
 								</goals>
-								<configuration>
-									<excludes>
-										<exclude>com/solenersync/userstore/UserstoreApplication.java</exclude>
-									</excludes>
-								</configuration>
 							</execution>
 							<execution>
 								<id>report</id>
