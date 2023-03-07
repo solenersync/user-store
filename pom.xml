@@ -155,7 +155,7 @@
 						</executions>
 						<configuration>
 							<excludes>
-								<exclude>**/UserstoreApplication.java</exclude>
+								<exclude>UserstoreApplication.java</exclude>
 							</excludes>
 						</configuration>
 					</plugin>
