@@ -153,11 +153,11 @@
 								</configuration>
 							</execution>
 						</executions>
-						<configuration>
-							<excludes>
-								<exclude>UserstoreApplication.java</exclude>
-							</excludes>
-						</configuration>
+							<configuration>
+								<excludes>
+									<exclude>com/solenersync/userstore/UserstoreApplication.java</exclude>
+								</excludes>
+							</configuration>
 					</plugin>
 				</plugins>
 			</build>
