@@ -42,8 +42,6 @@ public class UserService {
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setName(request.getName());
-            System.out.println(request.getName());
-            System.out.println(user);
             User updatedUser = repository.save(user);
             return Optional.ofNullable(updatedUser);
         } else {
@@ -61,9 +59,8 @@ public class UserService {
         user.setEmail(request.getEmail());
         user.setName(request.getName());
         user.setPassword(request.getPassword());
-        user.setRegistered_date(LocalDateTime.now());
-        User newUser = (User) repository.save(user);
-        return Optional.ofNullable(newUser);
+        user.setRegisteredDate(LocalDateTime.now());
+        return Optional.ofNullable(repository.save(user));
     }
 
     public Optional<User> authenticate(String email, String password) {
