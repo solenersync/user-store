@@ -49,11 +49,11 @@ class UserstoreControllerTests {
 		mockMvc = MockMvcBuilders.standaloneSetup(new UserstoreController(userService)).build();
 		date = LocalDateTime.of(2022, 8, 12, 19, 30, 30);
 		user = User.builder()
-			.user_id(10001)
+			.userId(10001)
 			.name("test")
 			.password("password")
 			.email("test@test.com")
-			.registered_date(date)
+			.registeredDate(date)
 			.build();
 
 		userRequest = UserRequest.builder()
@@ -66,7 +66,7 @@ class UserstoreControllerTests {
 
 	@ParameterizedTest
 	@JsonFileSource(resources = "/get-user.json")
-	public void should_return_user_when_found_by_id(JsonObject json) throws Exception {
+	void should_return_user_when_found_by_id(JsonObject json) throws Exception {
 		when(userService.findById(10001)).thenReturn(Optional.of(user));
 		mockMvc.perform(get("/api/v1/users/user/10001"))
 			.andExpect(status().isOk())
@@ -92,7 +92,7 @@ class UserstoreControllerTests {
 
 	@ParameterizedTest
 	@JsonFileSource(resources = "/create-user.json")
-	public void should_return_internal_server_error_when_error_creating_user(JsonObject json) throws Exception {
+	void should_return_internal_server_error_when_error_creating_user(JsonObject json) throws Exception {
 		doAnswer(invocation -> {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error creating user");
 		}).when(userService).create(any(UserRequest.class));
@@ -116,7 +116,7 @@ class UserstoreControllerTests {
 
 	@ParameterizedTest
 	@JsonFileSource(resources = "/update-user.json")
-	public void should_return_internal_server_error_when_error_updating_user(JsonObject json) throws Exception {
+	void should_return_internal_server_error_when_error_updating_user(JsonObject json) throws Exception {
 		doAnswer(invocation -> {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating solar array");
 		}).when(userService).update(any(UserUpdateRequest.class));
@@ -144,8 +144,29 @@ class UserstoreControllerTests {
 	}
 
 	@ParameterizedTest
+	@JsonFileSource(resources = "/get-user.json")
+	void should_return_user_when_found_by_email(JsonObject json) throws Exception {
+		when(userService.findByEmail("test@test.com")).thenReturn(Optional.of(user));
+		mockMvc.perform(post("/api/v1/users/user/")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(json.toString()))
+			.andExpect(status().isOk())
+			.andExpect(MockMvcResultMatchers.content().json(json.toString()));
+	}
+
+	@ParameterizedTest
+	@JsonFileSource(resources = "/get-user.json")
+	void should_return_not_found_when_user_not_found_by_email(JsonObject json) throws Exception {
+		when(userService.findByEmail(anyString())).thenReturn(Optional.empty());
+		mockMvc.perform(post("/api/v1/users/user")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(json.toString()))
+			.andExpect(status().isNotFound());
+	}
+
+	@ParameterizedTest
 	@JsonFileSource(resources = "/create-user.json")
-	public void should_return_user_when_authenticated(JsonObject json) throws Exception {
+	void should_return_user_when_authenticated(JsonObject json) throws Exception {
 		when(userService.authenticate("test@test.com", "password")).thenReturn(Optional.of(user));
 		mockMvc.perform(post("/api/v1/users/user/authenticate")
 			.contentType(MediaType.APPLICATION_JSON)
@@ -155,7 +176,7 @@ class UserstoreControllerTests {
 
 	@ParameterizedTest
 	@JsonFileSource(resources = "/create-user.json")
-	public void should_return_internal_server_error_when_not_authenticated(JsonObject json) throws Exception {
+	void should_return_internal_server_error_when_not_authenticated(JsonObject json) throws Exception {
 		when(userService.authenticate("test@test.com", "password")).thenReturn(Optional.empty());
 		mockMvc.perform(post("/api/v1/users/user/authenticate")
 				.contentType(MediaType.APPLICATION_JSON)
