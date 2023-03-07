@@ -24,7 +24,7 @@ public class UserstoreController {
     @CrossOrigin
     @GetMapping("/user/{id}")
     public ResponseEntity<User> getUser(@PathVariable Integer id) {
-        log.debug("Retrieving user {} ",id);
+        log.info("Retrieving user {} ",id);
         return userService.findById(id).map(ResponseEntity::ok)
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -32,7 +32,7 @@ public class UserstoreController {
     @CrossOrigin
     @PostMapping("/user/update")
     public ResponseEntity<User> update(@RequestBody UserUpdateRequest request) {
-        log.debug("Updating user {} ",request.getEmail());
+        log.info("Updating user {} ",request.getEmail());
         return userService.update(request).map(ResponseEntity::ok)
             .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
@@ -40,14 +40,14 @@ public class UserstoreController {
     @CrossOrigin
     @PostMapping("/user")
     public Optional<User> getUserByEmail(@RequestBody UserRequest request) {
-        log.debug("Retrieving user {} ",request.getEmail());
+        log.info("Retrieving user {} ",request.getEmail());
         return userService.findByEmail(request.getEmail());
     }
 
     @CrossOrigin
     @PostMapping("/user/create")
     public ResponseEntity<User> createUser(@RequestBody UserRequest request) {
-        log.debug("Creating user {}",request.getEmail());
+        log.info("Creating user {}",request.getEmail());
         return userService.create(request).map(ResponseEntity::ok)
             .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
@@ -55,7 +55,7 @@ public class UserstoreController {
     @CrossOrigin
     @PostMapping("/user/authenticate")
     public ResponseEntity<User> authenticateUser(@RequestBody UserRequest request) {
-        log.debug("Authenticating user {} ",request.getEmail());
+        log.info("Authenticating user {} ",request.getEmail());
         return userService.authenticate(request.getEmail(), request.getPassword()).map(ResponseEntity::ok)
             .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
