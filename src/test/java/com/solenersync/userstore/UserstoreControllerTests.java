@@ -144,6 +144,27 @@ class UserstoreControllerTests {
 	}
 
 	@ParameterizedTest
+	@JsonFileSource(resources = "/get-user.json")
+	void should_return_user_when_found_by_email(JsonObject json) throws Exception {
+		when(userService.findByEmail("test@test.com")).thenReturn(Optional.of(user));
+		mockMvc.perform(post("/api/v1/users/user/")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(json.toString()))
+			.andExpect(status().isOk())
+			.andExpect(MockMvcResultMatchers.content().json(json.toString()));
+	}
+
+	@ParameterizedTest
+	@JsonFileSource(resources = "/get-user.json")
+	void should_return_not_found_when_user_not_found_by_email(JsonObject json) throws Exception {
+		when(userService.findByEmail(anyString())).thenReturn(Optional.empty());
+		mockMvc.perform(post("/api/v1/users/user")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(json.toString()))
+			.andExpect(status().isNotFound());
+	}
+
+	@ParameterizedTest
 	@JsonFileSource(resources = "/create-user.json")
 	void should_return_user_when_authenticated(JsonObject json) throws Exception {
 		when(userService.authenticate("test@test.com", "password")).thenReturn(Optional.of(user));

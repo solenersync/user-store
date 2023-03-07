@@ -4,6 +4,7 @@ import com.solenersync.userstore.model.User;
 import com.solenersync.userstore.model.UserRequest;
 import com.solenersync.userstore.model.UserUpdateRequest;
 import com.solenersync.userstore.service.UserService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,13 +37,14 @@ public class UserstoreController {
     }
 
     @PostMapping("/user")
-    public Optional<User> getUserByEmail(@RequestBody UserRequest request) {
+    public ResponseEntity<User> getUserByEmail(@RequestBody UserRequest request) {
         log.info("Retrieving user {} ",request.getEmail());
-        return userService.findByEmail(request.getEmail());
+        return userService.findByEmail(request.getEmail()).map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/user/create")
-    public ResponseEntity<User> createUser(@RequestBody UserRequest request) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserRequest request) {
         log.info("Creating user {}",request.getEmail());
         return userService.create(request).map(ResponseEntity::ok)
             .orElseGet(() -> ResponseEntity.internalServerError().build());
