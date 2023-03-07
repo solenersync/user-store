@@ -49,7 +49,8 @@ public class UserService {
         }
     }
 
-    private List<User> findAll() {
+    @Transactional(readOnly = true)
+    public List<User> findAll() {
         return repository.findAll();
     }
 
