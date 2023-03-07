@@ -1,17 +1,14 @@
 package com.solenersync.userstore.service;
 
-import com.solenersync.userstore.model.AuthResult;
 import com.solenersync.userstore.model.User;
 import com.solenersync.userstore.model.UserRequest;
+import com.solenersync.userstore.model.UserUpdateRequest;
 import com.solenersync.userstore.respository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Transactional
@@ -30,8 +27,28 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User>findByEmail(String email) {
-        return repository.findByEmail(email);
+    public Optional<User> findByEmail(String email) {
+        List<User> userList = findAll();
+        for (User user : userList) {
+            if (user.getEmail().equals(email)) {
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<User> update(UserUpdateRequest request) {
+        Optional<User> optionalUser = this.findByEmail(request.getEmail());
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setName(request.getName());
+            System.out.println(request.getName());
+            System.out.println(user);
+            User updatedUser = repository.save(user);
+            return Optional.ofNullable(updatedUser);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Transactional(readOnly = true)
@@ -39,25 +56,24 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User create(UserRequest request) {
+    public Optional<User> create(UserRequest request) {
         User user = new User();
         user.setEmail(request.getEmail());
         user.setName(request.getName());
         user.setPassword(request.getPassword());
         user.setRegistered_date(LocalDateTime.now());
         User newUser = (User) repository.save(user);
-        return newUser;
+        return Optional.ofNullable(newUser);
     }
 
-    public AuthResult authenticate(Integer userId, String password) {
-        return findById(userId).map(user -> passwordMatch(user, password)).orElse(AuthResult.INVALID);
+    public Optional<User> authenticate(String email, String password) {
+        return Optional.ofNullable(findByEmail(email).map(user -> passwordMatch(user, password)).orElse(null));
     }
 
-    private AuthResult passwordMatch(User user, String password) {
-        String passwordMd5 = DigestUtils.md5DigestAsHex(password.getBytes());
-        if (Objects.equals(user.getPassword(), passwordMd5)) {
-            return AuthResult.VALID;
+    private User passwordMatch(User user, String password) {
+        if (user.getPassword().equals(password)) {
+            return user;
         }
-        return AuthResult.INVALID;
+        return null;
     }
 }

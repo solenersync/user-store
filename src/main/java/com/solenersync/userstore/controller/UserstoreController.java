@@ -1,13 +1,13 @@
 package com.solenersync.userstore.controller;
 
-import com.solenersync.userstore.model.AuthResult;
 import com.solenersync.userstore.model.User;
 import com.solenersync.userstore.model.UserRequest;
+import com.solenersync.userstore.model.UserUpdateRequest;
 import com.solenersync.userstore.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -21,30 +21,42 @@ public class UserstoreController {
         this.userService = userService;
     }
 
+    @CrossOrigin
     @GetMapping("/user/{id}")
-    public Optional<User> getUser(@PathVariable Integer id) {
+    public ResponseEntity<User> getUser(@PathVariable Integer id) {
         log.debug("Retrieving user {} ",id);
-        System.out.println("Retrieving user " + id);
-        return userService.findById(id);
+        return userService.findById(id).map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @CrossOrigin
+    @PostMapping("/user/update")
+    public ResponseEntity<User> update(@RequestBody UserUpdateRequest request) {
+        log.debug("Updating user {} ",request.getEmail());
+        return userService.update(request).map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.internalServerError().build());
+    }
+
+    @CrossOrigin
+    @PostMapping("/user")
+    public Optional<User> getUserByEmail(@RequestBody UserRequest request) {
+        log.debug("Retrieving user {} ",request.getEmail());
+        return userService.findByEmail(request.getEmail());
+    }
+
+    @CrossOrigin
     @PostMapping("/user/create")
-    public Integer createUser(@RequestBody UserRequest request) {
-        User user = userService.create(request);
-        log.debug("Created user {}");
-        return user.getUser_id();
+    public ResponseEntity<User> createUser(@RequestBody UserRequest request) {
+        log.debug("Creating user {}",request.getEmail());
+        return userService.create(request).map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
 
-    @GetMapping("/all")
-    List<User> allUsers() {
-        log.debug("Retrieving all users");
-        return userService.findAll();
-    }
-
-    @PostMapping("/user/{id}/authenticate")
-    public String authenticateUser(@PathVariable Integer id, @RequestBody UserRequest request) {
-        AuthResult authResult = userService.authenticate(id, request.getPassword());
-        log.debug("Authenticating user id {} result {} ",id, authResult);
-        return "Hello there from user-store - this is your id 10001";
+    @CrossOrigin
+    @PostMapping("/user/authenticate")
+    public ResponseEntity<User> authenticateUser(@RequestBody UserRequest request) {
+        log.debug("Authenticating user {} ",request.getEmail());
+        return userService.authenticate(request.getEmail(), request.getPassword()).map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
 }

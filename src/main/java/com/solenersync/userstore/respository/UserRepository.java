@@ -10,8 +10,6 @@ import java.util.Optional;
 @Component
 public interface UserRepository extends CrudRepository<User, Integer> {
 
-    Optional<User> findByEmail(String email);
-
     Optional<User> findById(Integer id);
 
     List<User> findAll();
