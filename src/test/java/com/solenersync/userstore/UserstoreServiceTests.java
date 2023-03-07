@@ -87,7 +87,7 @@ class UserstoreServiceTests {
 
 	@Test
 	void should_return_new_user_when_user_is_updated() throws Exception {
-		when(userRepository.findById(10001)).thenReturn(Optional.of(user));
+		when(userRepository.findAll()).thenReturn(List.of(user));
 		when(userRepository.save(any(User.class))).thenReturn(user);
 		Optional<User> result = userService.update(userUpdateRequest);
 		assertThat(result).isEqualTo(Optional.of(user));
