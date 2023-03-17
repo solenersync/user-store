@@ -9,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
@@ -29,7 +27,7 @@ public class UserstoreController {
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/user/update")
+    @PutMapping("/user/update")
     public ResponseEntity<User> update(@RequestBody UserUpdateRequest request) {
         log.info("Updating user {} ",request.getEmail());
         return userService.update(request).map(ResponseEntity::ok)

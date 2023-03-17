@@ -107,7 +107,7 @@ class UserstoreControllerTests {
 	@JsonFileSource(resources = "/update-user.json")
 	void should_return_ok_when_user_is_updated(JsonObject json) throws Exception {
 		when(userService.update(any(UserUpdateRequest.class))).thenReturn(Optional.of(new User()));
-		mockMvc.perform(post("/api/v1/users/user/update")
+		mockMvc.perform(put("/api/v1/users/user/update")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json.toString()))
 			.andExpect(status().isOk());
@@ -120,7 +120,7 @@ class UserstoreControllerTests {
 		doAnswer(invocation -> {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating solar array");
 		}).when(userService).update(any(UserUpdateRequest.class));
-		mockMvc.perform(post("/api/v1/users/user/update")
+		mockMvc.perform(put("/api/v1/users/user/update")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json.toString()))
 			.andExpect(status().isInternalServerError());
