@@ -18,8 +18,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
-    @SequenceGenerator(name = "generator", sequenceName = "users_userid_seq", allocationSize = 1)
-    @Column(name = "userId")
+    @SequenceGenerator(name = "generator", sequenceName = "users_user_id_seq", allocationSize = 1)
+    @Column(name = "user_id")
     public Integer userId;
 
     @Column(name = "name")
@@ -32,7 +32,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "registeredDate")
+    @Column(name = "registered_date")
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime registeredDate;
 
