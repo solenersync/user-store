@@ -51,7 +51,7 @@ fake_ci_webhook:
 ## =====================
 
 test:
-	mvn test -P pact-provider
+	mvn test -P pact-provider -Dpact.verifier.publishResults=true
 
 ## =====================
 ## Deploy tasks
