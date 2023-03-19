@@ -7,7 +7,6 @@ import au.com.dius.pact.provider.junitsupport.*;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 import com.solenersync.userstore.respository.UserRepository;
-import com.solenersync.userstore.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Provider("user-store")
 @Consumer("ses-front-end")
-//@PactBroker(url = "https://solenersync.pactflow.io")
-@PactFolder("pacts")
+@PactBroker(url = "https://solenersync.pactflow.io")
 @IgnoreNoPactsToVerify
 @IgnoreMissingStateChange
 @ExtendWith(SpringExtension.class)
