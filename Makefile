@@ -4,11 +4,10 @@ PACT_CHANGED_WEBHOOK_UUID := "c76b601e-d66a-4eb1-88a4-6ebc50c0df8b"
 CONTRACT_REQUIRING_VERIFICATION_PUBLISHED_WEBHOOK_UUID := "8ce63439-6b70-4e9b-8891-703d5ea2953c"
 PACT_CLI="docker run --rm -v ${PWD}:${PWD} -e PACT_BROKER_BASE_URL -e PACT_BROKER_TOKEN pactfoundation/pact-cli"
 
-export GIT_COMMIT?=$(shell git rev-parse HEAD)
-export GIT_BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
-export ENVIRONMENT?=production
-export PACT_BROKER_BASE_URL?=https://solenersync.pactflow.io
-export PACT_BROKER_TOKEN?=${{ secrets.PACTFLOW_TOKEN }}
+.EXPORT_ALL_VARIABLES:
+GIT_COMMIT?=$(shell git rev-parse HEAD)
+GIT_BRANCH?=$(shell git rev-parse --abbrev-ref HEAD)
+ENVIRONMENT?=production
 
 # Only deploy from main (to production env) or test (to test env)
 ifeq ($(GIT_BRANCH),main)
