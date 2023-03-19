@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @ExtendWith({MockitoExtension.class})
-class UserstoreControllerTests {
+class UserstoreControllerUnitTests {
 
 	private MockMvc mockMvc;
 	private LocalDateTime date;

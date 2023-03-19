@@ -1,4 +1,4 @@
-name: Build
+name: Contract Tests
 
 on:
   push:
@@ -14,6 +14,7 @@ env:
 
 jobs:
   test:
+    name: Provider verify
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,26 +28,4 @@ jobs:
       - name: Prepare
         run: mvn compile test-compile
       - name: Pull and verify contracts
-        run: mvn test -P pact-provider -Dpact.verifier.publishResults=true -Dpact.provider.version=PR-${GITHUB_REF} -Dpactbroker.url=$PACT_BROKER_BASE_URL -Dpactbroker.token=$PACT_BROKER_TOKEN -Dpactbroker.consumerversionselectors.tags=main
-
-  # Runs on branches as well, so we know the status of our PRs
-  can-i-deploy:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - run: docker pull pactfoundation/pact-cli:latest
-      - name: Can I deploy?
-        run: GIT_BRANCH=${GITHUB_REF:11} make can_i_deploy
-#
-#  # Only deploy from master
-#  deploy:
-#    runs-on: ubuntu-latest
-#    needs: can-i-deploy
-#    steps:
-#      - uses: actions/checkout@v2
-#      - run: docker pull pactfoundation/pact-cli:latest
-#      - name: Deploy
-#        run: GIT_BRANCH=${GITHUB_REF:11} make deploy
-#        if: github.ref == 'refs/heads/master'
+        run: mvn test -P pact-provider -Dpact.verifier.publishResults=true -Dpact.provider.version=PR-${GITHUB_REF} -Dpactbroker.url=$PACT_BROKER_BASE_URL -Dpactbroker.token=$PACT_BROKER_TOKEN -Dpactbroker.consumerversionselectors.tags=*
