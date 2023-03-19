@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith({MockitoExtension.class})
-class UserstoreServiceTests {
+class UserstoreServiceUnitTests {
 
 	private UserService userService;
 	private UserRequest userRequest;
