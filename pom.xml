@@ -193,7 +193,7 @@
 								</goals>
 								<configuration>
 									<includes>
-										<include>**/*ProviderTests.java</include>
+										<include>*ProviderTests.java</include>
 									</includes>
 								</configuration>
 							</execution>
