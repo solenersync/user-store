@@ -51,7 +51,7 @@ fake_ci_webhook:
 ## =====================
 
 test:
-ifeq ($(PACT_PROVIDER),true)
+ifeq ($(PACT_BROKER_PUBLISH_VERIFICATION_RESULTS),true)
 	mvn test -P pact-provider -Dpact.verifier.publishResults=true
 else
 	mvn test
