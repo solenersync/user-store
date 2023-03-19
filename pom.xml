@@ -92,6 +92,23 @@
 				<artifactId>hibernate-validator</artifactId>
 				<version>7.0.1.Final</version>
 			</dependency>
+			<dependency>
+				<groupId>au.com.dius.pact.consumer</groupId>
+				<artifactId>junit5</artifactId>
+				<version>4.3.7</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>au.com.dius.pact.provider</groupId>
+				<artifactId>junit5spring</artifactId>
+				<version>4.3.7</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr4-runtime</artifactId>
+				<version>4.9.2</version>
+			</dependency>
 		</dependencies>
 
 	<build>
@@ -150,6 +167,63 @@
 									<formats>
 										<format>XML</format>
 									</formats>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>pact-provider</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>default-test</id>
+								<phase>none</phase>
+							</execution>
+							<execution>
+								<id>pact-provider-test</id>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<includes>
+										<include>**/*ContractTests.java</include>
+									</includes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>unit</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>default-test</id>
+								<phase>none</phase>
+							</execution>
+							<execution>
+								<id>unit-test</id>
+								<phase>test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<includes>
+										<include>**/*UnitTests.java</include>
+									</includes>
 								</configuration>
 							</execution>
 						</executions>
