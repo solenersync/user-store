@@ -25,6 +25,14 @@ public class StubSetup {
         .registeredDate(LocalDateTime.now())
         .build();
 
+    User userAuth = User.builder()
+        .userId(1)
+        .name("John Doe")
+        .email("jd@test.com")
+        .registeredDate(LocalDateTime.now())
+        .password("secret26")
+        .build();
+
 
     public void stubForGetUserByEmail(UserRepository userRepository) {
         when(userRepository.findAll()).thenReturn(Collections.singletonList(user));
@@ -39,5 +47,9 @@ public class StubSetup {
         when(userRepository.findAll()).thenReturn(Collections.singletonList(user));
         when(userRepository.save(any()))
             .thenAnswer(invocation -> user);
+    }
+
+    public void stubForAuthenticateUser(UserRepository userRepository) {
+        when(userRepository.findAll()).thenReturn(Collections.singletonList(userAuth));
     }
 }
