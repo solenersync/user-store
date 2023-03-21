@@ -5,7 +5,10 @@ import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
 import au.com.dius.pact.provider.junitsupport.*;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
+import au.com.dius.pact.provider.junitsupport.loader.PactBrokerAuth;
+import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 import com.solenersync.userstore.respository.UserRepository;
+import com.solenersync.userstore.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,8 +21,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Provider("user-store")
 @Consumer("ses-front-end")
-@PactBroker(url = "https://solenersync.pactflow.io")
-@IgnoreNoPactsToVerify
+@PactBroker(url = "https://solenersync.pactflow.io", authentication = @PactBrokerAuth(token = "${PACT_BROKER_TOKEN}"))
+//@PactFolder("pacts")
 @IgnoreMissingStateChange
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("pact-provider")
@@ -59,5 +62,10 @@ public class UserstoreProviderContractTests {
     @State("should update user and return status 200")
     void updateUser() {
         StubSetup.stubForUpdateUser(userRepository);
+    }
+
+    @State("should authenticate user and return a user object")
+    void authenticateUser() {
+        StubSetup.stubForAuthenticateUser(userRepository);
     }
 }
