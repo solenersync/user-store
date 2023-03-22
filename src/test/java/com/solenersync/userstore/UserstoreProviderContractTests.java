@@ -49,23 +49,43 @@ public class UserstoreProviderContractTests {
         }
     }
 
-    @State("should return user details")
+    @State("a user exists")
     void getUserByEmail() {
         StubSetup.stubForGetUserByEmail(userRepository);
     }
 
-    @State("should create user and return user details")
+    @State("a user doesnt exist")
+    void getUserByEmailFail() {
+        StubSetup.stubForGetUserByEmailFail(userRepository);
+    }
+
+    @State("a user is created")
     void createUser() {
         StubSetup.stubForCreateUser(userRepository);
     }
 
-    @State("should update user and return status 200")
+    @State("a user fails to be created")
+    void createUserFail() {
+        StubSetup.stubForCreateUserFail(userRepository);
+    }
+
+    @State("a user is updated")
     void updateUser() {
         StubSetup.stubForUpdateUser(userRepository);
     }
 
-    @State("should authenticate user and return a user object")
+    @State("a user fails to be updated")
+    void updateUserFail() {
+        StubSetup.stubForUpdateUser(userRepository);
+    }
+
+    @State("user credentials match")
     void authenticateUser() {
+        StubSetup.stubForAuthenticateUser(userRepository);
+    }
+
+    @State("user credentials dont match")
+    void authenticateUserFail() {
         StubSetup.stubForAuthenticateUser(userRepository);
     }
 }

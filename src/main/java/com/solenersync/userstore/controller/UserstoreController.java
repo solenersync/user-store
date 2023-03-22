@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
@@ -20,6 +21,7 @@ public class UserstoreController {
         this.userService = userService;
     }
 
+    @CrossOrigin
     @GetMapping("/user/{id}")
     public ResponseEntity<User> getUser(@PathVariable Integer id) {
         log.info("Retrieving user {} ",id);
@@ -27,13 +29,15 @@ public class UserstoreController {
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @CrossOrigin
     @PutMapping("/user/update")
-    public ResponseEntity<User> update(@RequestBody UserUpdateRequest request) {
+    public ResponseEntity<User> updateUser(@RequestBody UserUpdateRequest request) {
         log.info("Updating user {} ",request.getEmail());
         return userService.update(request).map(ResponseEntity::ok)
             .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
 
+    @CrossOrigin
     @PostMapping("/user")
     public ResponseEntity<User> getUserByEmail(@RequestBody UserRequest request) {
         log.info("Retrieving user {} ",request.getEmail());
@@ -41,6 +45,7 @@ public class UserstoreController {
             .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @CrossOrigin
     @PostMapping("/user/create")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserRequest request) {
         log.info("Creating user {}",request.getEmail());
@@ -48,6 +53,7 @@ public class UserstoreController {
             .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
 
+    @CrossOrigin
     @PostMapping("/user/authenticate")
     public ResponseEntity<User> authenticateUser(@RequestBody UserRequest request) {
         log.info("Authenticating user {} ",request.getEmail());
