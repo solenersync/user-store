@@ -38,9 +38,19 @@ public class StubSetup {
         when(userRepository.findAll()).thenReturn(Collections.singletonList(user));
     }
 
+    public void stubForGetUserByEmailFail(UserRepository userRepository) {
+        when(userRepository.findById(any())).thenReturn(null);
+    }
+
+
     public void stubForCreateUser(UserRepository userRepository) {
         when(userRepository.save(any()))
             .thenAnswer(invocation -> user);
+    }
+
+    public void stubForCreateUserFail(UserRepository userRepository) {
+        when(userRepository.save(any()))
+            .thenAnswer(invocation -> null);
     }
 
     public void stubForUpdateUser(UserRepository userRepository) {
