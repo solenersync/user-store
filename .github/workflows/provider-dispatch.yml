@@ -2,7 +2,7 @@ name: Provider Tests
 
 on:
   repository_dispatch:
-    types: [ contract_requiring_verification_published ]
+    types: [ pact_changed ]
 
 env:
   PACT_BROKER_BASE_URL: https://solenersync.pactflow.io
