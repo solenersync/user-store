@@ -2,8 +2,8 @@ name: Provider Tests
 
 on:
   push:
-    tags:
-      - 1.0.1*
+    branches:
+      - main
 
 env:
   PACT_BROKER_BASE_URL: https://solenersync.pactflow.io
