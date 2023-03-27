@@ -6,6 +6,8 @@ import com.solenersync.userstore.model.UserUpdateRequest;
 import com.solenersync.userstore.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,9 +46,15 @@ public class UserstoreController {
 
     @PostMapping("/user/create")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserRequest request) {
-        log.info("Creating user {}",request.getEmail());
-        return userService.create(request).map(ResponseEntity::ok)
-            .orElseGet(() -> ResponseEntity.internalServerError().build());
+        try {
+            log.info("Creating user {}", request.getEmail());
+            return userService.create(request)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.internalServerError().build());
+        } catch (DataIntegrityViolationException e) {
+            log.warn("User with email {} already exists", request.getEmail());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
     @PostMapping("/user/authenticate")
