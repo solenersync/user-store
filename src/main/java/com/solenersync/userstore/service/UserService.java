@@ -55,9 +55,6 @@ public class UserService {
     }
 
     public Optional<User> create(UserRequest request) {
-        if(!request.getEmail().endsWith("test.com")) {
-            return null;
-        }
         User user = new User();
         user.setEmail(request.getEmail());
         user.setName(request.getName());
